@@ -3,6 +3,8 @@
 
 
 CPerson::CPerson(unsigned short age, string name, unsigned short weight, unsigned short growth, bool isMale)
+	: p_name(move(name)), p_isMale(isMale),
+	p_age(age), p_weight(weight), p_growth(growth)
 {
 
 }
@@ -53,5 +55,5 @@ string CPerson::GetName()const
 }
 void CPerson::SetName(string name)
 {
-	p_name = name;
+	p_name = move(name);
 }
