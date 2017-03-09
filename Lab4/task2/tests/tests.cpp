@@ -2,8 +2,8 @@
 //
 
 #include "stdafx.h"
-#include "../task2/Person.h"
-#include "../task2/University.h"
+//#include "../task2/Person.h"
+//#include "../task2/University.h"
 #include "../task2/Student.h"
 
 BOOST_AUTO_TEST_CASE(TestPerson)
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(TestUniversity)
 
 BOOST_AUTO_TEST_CASE(TestStudent)
 {
-	auto university = make_shared<CUniversity>("Volgatech");
+	auto university = std::make_shared<CUniversity>("Volgatech");
 	CStudent student("Daniel", true, 20, 70, 180, university, 1);
 	BOOST_CHECK_EQUAL(student.GetName(), "Daniel");
 	BOOST_CHECK_EQUAL(student.GetAge(), 20);
@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_CASE(TestStudent)
 	BOOST_CHECK_EQUAL(student.GetYearOfStudy(), 1);
 	BOOST_CHECK_EQUAL(university->GetName(), "Volgatech");
 
-	auto universityNew = make_shared<CUniversity>("VolgaVolgatech");
+	auto universityNew = std::make_shared<CUniversity>("VolgaVolgatech");
 	student.SetUniversity(universityNew);
 	BOOST_CHECK_EQUAL(student.GetUniversity(), universityNew);
 

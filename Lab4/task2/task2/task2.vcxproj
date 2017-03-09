@@ -79,6 +79,8 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="StudOperations.h" />
+    <ClInclude Include="UniverOperations.h" />
     <ClInclude Include="Person.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Student.h" />
@@ -86,11 +88,16 @@
     <ClInclude Include="University.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Person.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Student.cpp" />
+    <ClCompile Include="StudOperations.cpp" />
     <ClCompile Include="task2.cpp" />
+    <ClCompile Include="UniverOperations.cpp" />
+    <ClCompile Include="University.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
