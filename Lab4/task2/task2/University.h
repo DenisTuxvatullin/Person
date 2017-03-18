@@ -6,8 +6,7 @@ public:
 	CUniversity(std::string university);
 	~CUniversity();
 	std::string GetName() const;
-	void SetName(std::string name);
-
+	void SetName(const std::string& name);
 private:
 	std::string m_name;
 };

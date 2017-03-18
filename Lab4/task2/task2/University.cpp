@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include <string>
 #include "University.h"
 
 std::string CUniversity::GetName() const
@@ -7,7 +6,7 @@ std::string CUniversity::GetName() const
 	return m_name;
 }
 
-void CUniversity::SetName(std::string name)
+void CUniversity::SetName(const std::string& name)
 {
 	m_name = move(name);
 }

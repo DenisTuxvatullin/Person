@@ -1,13 +1,7 @@
 #include "stdafx.h"
-#include <set>
-#include <iostream>
-#include <fstream>
-#include "UniverOperations.h"
-#include <memory>
+static const std::string UNIVERSITIES_FILE_NAME = "2-univer.txt";
 
-const std::string UNIVERSITIES_FILE_NAME = "2-univer.txt";
-
-bool IsUniversityExist(const std::set<std::shared_ptr<CUniversity>> &universities, const std::string &name)
+bool UniverOperations::IsUniversityExist(const std::set<std::shared_ptr<CUniversity>> &universities, const std::string &name)
 {
 	for (auto &university : universities)
 	{
@@ -20,7 +14,7 @@ bool IsUniversityExist(const std::set<std::shared_ptr<CUniversity>> &universitie
 	return false;
 }
 
-void DeleteAllStudentsFromSameUniversity(std::set<std::shared_ptr<CStudent>> &students,
+void UniverOperations::DeleteAllStudentsFromSameUniversity(std::set<std::shared_ptr<CStudent>> &students,
 	std::shared_ptr<CUniversity> &university)
 {
 	for (auto &student : students)
@@ -32,7 +26,7 @@ void DeleteAllStudentsFromSameUniversity(std::set<std::shared_ptr<CStudent>> &st
 	}
 }
 
-std::set<std::shared_ptr<CUniversity>> LoadUniversities()
+std::set<std::shared_ptr<CUniversity>> UniverOperations::LoadUniversities()
 {
 	std::set<std::shared_ptr<CUniversity>> universities;
 
@@ -48,19 +42,19 @@ std::set<std::shared_ptr<CUniversity>> LoadUniversities()
 	return universities;
 }
 
-bool DeleteUniversity(std::set<std::shared_ptr<CUniversity>> &universities,
+bool UniverOperations::DeleteUniversity(std::set<std::shared_ptr<CUniversity>> &universities,
 	std::shared_ptr<CUniversity> &university, std::set<std::shared_ptr<CStudent>> &students)
 {
 	if (universities.find(university) != universities.end())
 	{
-		DeleteAllStudentsFromSameUniversity(students, university);
+		UniverOperations::DeleteAllStudentsFromSameUniversity(students, university);
 		universities.erase(university);
 		university = nullptr;
 	}
 	return true;
 }
 
-void SaveUniversities(const std::set<std::shared_ptr<CUniversity>> &universities)
+void UniverOperations::SaveUniversities(const std::set<std::shared_ptr<CUniversity>> &universities)
 {
 	std::ofstream fout(UNIVERSITIES_FILE_NAME);
 
@@ -70,7 +64,7 @@ void SaveUniversities(const std::set<std::shared_ptr<CUniversity>> &universities
 	}
 }
 
-std::string GetUniversityInfo()
+std::string UniverOperations::GetUniversityInfo()
 {
 	std::string university;
 	std::cout << "Input university name : ";
@@ -79,7 +73,7 @@ std::string GetUniversityInfo()
 	return university;
 }
 
-std::shared_ptr<CUniversity> GetUniversity(const std::set<std::shared_ptr<CUniversity>> &universities, const std::string &name)
+std::shared_ptr<CUniversity> UniverOperations::GetUniversity(const std::set<std::shared_ptr<CUniversity>> &universities, const std::string &name)
 {
 	for (auto &university : universities)
 	{
@@ -94,22 +88,21 @@ std::shared_ptr<CUniversity> GetUniversity(const std::set<std::shared_ptr<CUnive
 
 
 
-bool AddUniversity(std::set<std::shared_ptr<CUniversity>> &universities, const std::string &name)
+bool UniverOperations::AddUniversity(std::set<std::shared_ptr<CUniversity>> &universities, const std::string &name)
 {
-	if (!IsUniversityExist(universities, name))
+	if (!UniverOperations::IsUniversityExist(universities, name))
 	{
 		auto universityPtr = std::make_shared<CUniversity>(name);
 		universities.insert(universityPtr);
-
 		return true;
 	}
 
 	return false;
 }
 
-void PrintUniversities(const std::set<std::shared_ptr<CUniversity>> &universities)
+void UniverOperations::PrintUniversities(const std::set<std::shared_ptr<CUniversity>> &universities)
 {
-	size_t i = 1;
+
 	for (auto &university : universities)
 	{
 		std::cout << university->GetName() << std::endl;

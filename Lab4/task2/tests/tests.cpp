@@ -2,65 +2,82 @@
 //
 
 #include "stdafx.h"
-//#include "../task2/Person.h"
-//#include "../task2/University.h"
 #include "../task2/Student.h"
 
-BOOST_AUTO_TEST_CASE(TestPerson)
+using namespace std;
+
+const string NAME = "STUDENT POLITEHA";
+const int STUDY_YEAR = 2, AGE = 12, WEIGHT = 50, GROWTH = 150;
+const string UNAME = "PGTU";
+
+struct UniverFixture
 {
-	CPerson person("Daniel", true, 20, 70, 180);
-	BOOST_CHECK_EQUAL(person.GetName(), "Daniel");
-	BOOST_CHECK_EQUAL(person.GetAge(), 20);
-	BOOST_CHECK_EQUAL(person.GetWeight(), 70);
-	BOOST_CHECK_EQUAL(person.GetGrowth(), 180);
-	BOOST_CHECK(person.IsMale());
+	CUniversity univer;
 
-	person.SetName("Seraf");
-	BOOST_CHECK_EQUAL(person.GetName(), "Seraf");
+	UniverFixture()
+		:univer(UNAME)
+	{
+	}
+};
 
-	person.SetAge(30);
-	BOOST_CHECK_EQUAL(person.GetAge(), 30);
-	person.SetAge(20);
-	BOOST_CHECK_EQUAL(person.GetAge(), 30);
+struct StudentFixture
+{
+	CStudent student;
 
-	person.SetWeight(60);
-	BOOST_CHECK_EQUAL(person.GetWeight(), 60);
+	StudentFixture()
+		:student(NAME, true, AGE, WEIGHT, GROWTH, nullptr, STUDY_YEAR)
+	{
+	}
+};
 
-	person.SetGrowth(190);
-	BOOST_CHECK_EQUAL(person.GetGrowth(), 190);
-	person.SetGrowth(185);
-	BOOST_CHECK_EQUAL(person.GetGrowth(), 190);
+BOOST_FIXTURE_TEST_SUITE(StudentTest, StudentFixture)
+
+BOOST_AUTO_TEST_CASE(StudentDefaultParams)
+{
+	BOOST_CHECK_EQUAL(student.GetAge(), AGE);
+	BOOST_CHECK_EQUAL(student.GetGrowth(), GROWTH);
+	BOOST_CHECK_EQUAL(student.GetWeight(), WEIGHT);
+	BOOST_CHECK_EQUAL(student.GetYearOfStudy(), STUDY_YEAR);
+	BOOST_CHECK_EQUAL(student.GetName(), NAME);
+	BOOST_CHECK_EQUAL(student.IsMale(), true);
 }
 
-BOOST_AUTO_TEST_CASE(TestUniversity)
+BOOST_AUTO_TEST_CASE(StudentWithChangedParams)
 {
-	CUniversity university("Volgatech");
-	BOOST_CHECK_EQUAL(university.GetName(), "Volgatech");
-
-	university.SetName("VolgaVolgatech");
-	BOOST_CHECK_EQUAL(university.GetName(), "VolgaVolgatech");
-
-}
-
-BOOST_AUTO_TEST_CASE(TestStudent)
-{
-	auto university = std::make_shared<CUniversity>("Volgatech");
-	CStudent student("Daniel", true, 20, 70, 180, university, 1);
-	BOOST_CHECK_EQUAL(student.GetName(), "Daniel");
+	auto universityNew = std::make_shared<CUniversity>("VolgaVolgatech");
+	student.SetName("Student");
+	BOOST_CHECK_EQUAL(student.GetName(), "Student");
+	student.SetAge(20);
+	student.SetGrowth(180);
+	student.SetWeight(70);
+	student.SetYearOfStudy(3);
+	student.SetUniversity(universityNew);
 	BOOST_CHECK_EQUAL(student.GetAge(), 20);
 	BOOST_CHECK_EQUAL(student.GetWeight(), 70);
 	BOOST_CHECK_EQUAL(student.GetGrowth(), 180);
-	BOOST_CHECK_EQUAL(student.GetUniversity(), university);
-	BOOST_CHECK(student.IsMale());
-	BOOST_CHECK_EQUAL(student.GetYearOfStudy(), 1);
-	BOOST_CHECK_EQUAL(university->GetName(), "Volgatech");
-
-	auto universityNew = std::make_shared<CUniversity>("VolgaVolgatech");
-	student.SetUniversity(universityNew);
 	BOOST_CHECK_EQUAL(student.GetUniversity(), universityNew);
-
-	student.SetYearOfStudy(2);
-	BOOST_CHECK_EQUAL(student.GetYearOfStudy(), 2);
-	student.SetYearOfStudy(1);
-	BOOST_CHECK_EQUAL(student.GetYearOfStudy(), 2);
+	BOOST_CHECK(student.IsMale());
+	BOOST_CHECK_EQUAL(student.GetYearOfStudy(), 3);
+	BOOST_CHECK_EQUAL(universityNew->GetName(), "VolgaVolgatech");
 }
+
+BOOST_AUTO_TEST_SUITE_END()
+
+//////////////////////////////////////////////////////////
+BOOST_FIXTURE_TEST_SUITE(UniverTest, UniverFixture)
+
+BOOST_AUTO_TEST_CASE(UniverDefaultParams)
+{
+	BOOST_CHECK_EQUAL(univer.GetName(), UNAME);
+
+}
+
+BOOST_AUTO_TEST_CASE(UniverWithChangedParams)
+{
+	univer.SetName("MGTU");
+	BOOST_CHECK_EQUAL(univer.GetName(), "MGTU");
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+

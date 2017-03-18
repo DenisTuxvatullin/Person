@@ -5,14 +5,7 @@
 #include "Person.h"
 #include "Student.h"
 #include "University.h"
-#include <set>
-#include <iostream>
-#include <fstream>
-#include "UniverOperations.h"
 #include "StudOperations.h"
-#include <stdlib.h>
-
-
 
 void PrintActions()
 {
@@ -26,7 +19,7 @@ void PrintActions()
 
 }
 
-void MainActions(std::set<std::shared_ptr<CUniversity>> &universities, std::set<std::shared_ptr<CStudent>> &students)
+void DialogWithUser(std::set<std::shared_ptr<CUniversity>> &universities, std::set<std::shared_ptr<CStudent>> &students)
 {
 	int choice = 1;
 	PrintActions();
@@ -38,7 +31,7 @@ void MainActions(std::set<std::shared_ptr<CUniversity>> &universities, std::set<
 		{
 			case 1:
 			{
-				  if (AddUniversity(universities, GetUniversityInfo()))
+				if (UniverOperations::AddUniversity(universities, UniverOperations::GetUniversityInfo()))
 				  {
 					  std::cout << "University has added" << std::endl;
 					  break;
@@ -48,9 +41,9 @@ void MainActions(std::set<std::shared_ptr<CUniversity>> &universities, std::set<
 			}
 			case 2:
 			{
-				  if (auto university = GetUniversity(universities, GetUniversityInfo()))
+				if (auto university = UniverOperations::GetUniversity(universities, UniverOperations::GetUniversityInfo()))
 				  {
-					  if (DeleteUniversity(universities, university, students))
+					  if (UniverOperations::DeleteUniversity(universities, university, students))
 					  {
 						  std::cout << "Deleted" << std::endl;
 						  break;
@@ -61,11 +54,11 @@ void MainActions(std::set<std::shared_ptr<CUniversity>> &universities, std::set<
 			}
 			case 3:
 			{
-				  if (auto student = GetNewStudent(universities))
+				  if (auto student = StudOperations::GetNewStudent(universities))
 				  {
 					  if (student->GetUniversity())
 					  {
-						  AddStudent(students, student);
+						  StudOperations::AddStudent(students, student);
 						  std::cout << "Student has added" << std::endl;
 						  break;
 					  }
@@ -75,9 +68,9 @@ void MainActions(std::set<std::shared_ptr<CUniversity>> &universities, std::set<
 			}
 			case 4:
 			{
-				  if (auto student = GetStudent(students, GetStudentInfo()))
+				if (auto student = StudOperations::GetStudent(students, StudOperations::GetStudentInfo()))
 				  {
-					  if (DeleteStudent(students, student))
+					  if (StudOperations::DeleteStudent(students, student))
 					  {
 						  std::cout << "Deleted" << std::endl;
 						  break;
@@ -88,10 +81,10 @@ void MainActions(std::set<std::shared_ptr<CUniversity>> &universities, std::set<
 			}
 			case 5:
 			{
-				  std::string universityInfo = GetUniversityInfo();
-				  if (auto university = GetUniversity(universities, universityInfo))
+				std::string universityInfo = UniverOperations::GetUniversityInfo();
+				if (auto university = UniverOperations::GetUniversity(universities, universityInfo))
 				  {
-					  std::string newName = GetUniversityInfo();
+					  std::string newName = UniverOperations::GetUniversityInfo();
 					  university->SetName(newName);
 					  std::cout << "Name has changed" << std::endl;
 					  break;
@@ -101,10 +94,10 @@ void MainActions(std::set<std::shared_ptr<CUniversity>> &universities, std::set<
 			}
 			case 6:
 			{
-				  if (auto student = GetStudent(students, GetStudentInfo()))
+				if (auto student = StudOperations::GetStudent(students, StudOperations::GetStudentInfo()))
 				  {
 					  int age, growth, weight, studyYear;
-					  GetChangeableStudent(age, growth, weight, studyYear);
+					  StudOperations::GetChangeableStudent(age, growth, weight, studyYear);
 					  student->SetAge(age);
 					  student->SetGrowth(growth);
 					  student->SetYearOfStudy(studyYear);
@@ -117,11 +110,11 @@ void MainActions(std::set<std::shared_ptr<CUniversity>> &universities, std::set<
 			}
 			case 7:
 			{
-				  if (auto student = GetStudent(students, GetStudentInfo()))
+				if (auto student = StudOperations::GetStudent(students, StudOperations::GetStudentInfo()))
 				  {
-					  if (auto university = GetUniversity(universities, GetUniversityInfo()))
+					  if (auto university = UniverOperations::GetUniversity(universities, UniverOperations::GetUniversityInfo()))
 					  {
-						  ChangeUniversityForStudent(university, students, student);
+						  StudOperations::ChangeUniversityForStudent(university, students, student);
 						  std::cout << "Changed" << std::endl;
 						  break;
 					  }
@@ -133,14 +126,14 @@ void MainActions(std::set<std::shared_ptr<CUniversity>> &universities, std::set<
 			}
 			case 8:
 			{
-				  PrintUniversities(universities);
+				  UniverOperations::PrintUniversities(universities);
 				  break;
 			}
 			case 9:
 			{
-				  if (auto university = GetUniversity(universities, GetUniversityInfo()))
+				  if (auto university = UniverOperations::GetUniversity(universities, UniverOperations::GetUniversityInfo()))
 				  {
-					  PrintStudents(university, students);
+					  StudOperations::PrintStudents(university, students);
 					  break;
 				  }
 				  std::cout << "No matches" << std::endl;
@@ -148,7 +141,7 @@ void MainActions(std::set<std::shared_ptr<CUniversity>> &universities, std::set<
 			}
 			case 10:
 			{
-				   PrintAllStudents(students);
+				   StudOperations::PrintAllStudents(students);
 				   break;
 			}
 			case 11:
@@ -164,13 +157,11 @@ void MainActions(std::set<std::shared_ptr<CUniversity>> &universities, std::set<
 
 int main()
 {
-	auto universities = LoadUniversities();
-	auto students = LoadStudents(universities);
-
-	MainActions(universities, students);
-	
-	SaveUniversities(universities);
-	SaveStudents(students);
+	auto universities = UniverOperations::LoadUniversities();
+	auto students = StudOperations::LoadStudents(universities);
+	DialogWithUser(universities, students);
+	UniverOperations::SaveUniversities(universities);
+	StudOperations::SaveStudents(students);
 	return 0;
 }
 

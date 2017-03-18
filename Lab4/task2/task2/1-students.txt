@@ -5,13 +5,6 @@ Aleks
 3
 female
 PGTU
-Marina
-22
-169
-62
-2
-male
-MARGU
 Nataha
 30
 61

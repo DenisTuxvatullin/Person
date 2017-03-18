@@ -11,13 +11,14 @@ public:
 	int GetGrowth() const;
 	int GetWeight() const;
 	void SetAge(int age);
-	void SetName(std::string name);
+	void SetName(const std::string& name);
 	void SetGrowth(int growth);
 	void SetWeight(int weight);
-
 private:
 	std::string m_name;
-	int m_growth, m_weight, m_age;
+	int m_growth;
+	int m_weight;
+	int m_age;
 	bool m_isMale;
 };
 

@@ -1,11 +1,8 @@
 #include "stdafx.h"
-#include <iostream>
-#include <fstream>
-#include <set>
 #include "StudOperations.h"
-const std::string STUDENTS_FILE_NAME = "1-students.txt";
+static const std::string STUDENTS_FILE_NAME = "1-students.txt";
 
-void PrintStudentInfo(const std::shared_ptr<const CStudent> &student)
+void StudOperations::PrintStudentInfo(const std::shared_ptr<const CStudent> &student)
 {
 	std::cout << "Name: " << student->GetName() << std::endl;
 	std::cout << (student->IsMale() ? "Male" : "Female") << std::endl;
@@ -16,7 +13,7 @@ void PrintStudentInfo(const std::shared_ptr<const CStudent> &student)
 	std::cout << "University name: " << student->GetUniversity()->GetName() << std::endl << std::endl;
 }
 
-void ChangeUniversityForStudent(const std::shared_ptr<CUniversity> &university,
+void StudOperations::ChangeUniversityForStudent(const std::shared_ptr<CUniversity> &university,
 	std::set<std::shared_ptr<CStudent>> &students, std::shared_ptr<CStudent> &student)
 {
 	students.erase(student);
@@ -24,77 +21,70 @@ void ChangeUniversityForStudent(const std::shared_ptr<CUniversity> &university,
 	students.insert(student);
 }
 
-bool ChangeUniversityName(const std::set<std::shared_ptr<CUniversity>> &universities, const std::shared_ptr<CUniversity> &university,
+bool StudOperations::ChangeUniversityName(const std::set<std::shared_ptr<CUniversity>> &universities, const std::shared_ptr<CUniversity> &university,
 	const std::string &newName)
 {
-	if (!IsUniversityExist(universities, newName))
+	if (!UniverOperations::IsUniversityExist(universities, newName))
 	{
 		university->SetName(newName);
 		return true;
 	}
-
 	return false;
 }
 
-bool DeleteStudent(std::set<std::shared_ptr<CStudent>> &students, std::shared_ptr<CStudent> &student)
+bool StudOperations::DeleteStudent(std::set<std::shared_ptr<CStudent>> &students, std::shared_ptr<CStudent> &student)
 {
-	if (students.erase(student))
+	if (students.erase(student) == 1)
 	{
 		return true;
 	}
 	return false;
 }
 
-
-
-void PrintStudents(const std::shared_ptr<const CUniversity> &university,
+void StudOperations::PrintStudents(const std::shared_ptr<const CUniversity> &university,
 	const std::set<std::shared_ptr<CStudent>> &students)
 {
-	size_t i = 1;
-	for (auto &student : students)
+	auto it = std::find_if(students.begin(), students.end(), [&](std::shared_ptr<CStudent> student)
 	{
-		if (student->GetUniversity() == university)
-		{
-			PrintStudentInfo(student);
-		}
+		return ((student->GetUniversity()) == university);
+	});
+	if (it != students.end())
+	{
+		StudOperations::PrintStudentInfo(*it);
 	}
 }
 
-void PrintAllStudents(const std::set<std::shared_ptr<CStudent>> &students)
+void StudOperations::PrintAllStudents(const std::set<std::shared_ptr<CStudent>> &students)
 {
-	size_t i = 1;
 	for (auto &student : students)
 	{
-		PrintStudentInfo(student);
+		StudOperations::PrintStudentInfo(student);
 	}
 }
 
-
-
-void ChangeAge(std::shared_ptr<CStudent> &student, int age)
+void StudOperations::ChangeAge(std::shared_ptr<CStudent> &student, int age)
 {
 	student->SetAge(age);
 }
 
-void ChangeHeight(std::shared_ptr<CStudent> &student, int growth)
+void StudOperations::ChangeHeight(std::shared_ptr<CStudent> &student, int growth)
 {
 	student->SetGrowth(growth);
 }
 
-void ChangeYear(std::shared_ptr<CStudent> &student, int year)
+void StudOperations::ChangeYear(std::shared_ptr<CStudent> &student, int year)
 {
 	student->SetYearOfStudy(year);
 }
 
-void AddStudent(std::set<std::shared_ptr<CStudent>> &students, std::shared_ptr<CStudent> &student)
+void StudOperations::AddStudent(std::set<std::shared_ptr<CStudent>> &students, std::shared_ptr<CStudent> &student)
 {
 	students.insert(student);
 }
 
-std::set<std::shared_ptr<CStudent>> LoadStudents(const std::set<std::shared_ptr<CUniversity>> &universities)
+std::set<std::shared_ptr<CStudent>> StudOperations::LoadStudents(const std::set<std::shared_ptr<CUniversity>> &universities)
 {
 	std::set<std::shared_ptr<CStudent>> students;
-
 	std::ifstream fin(STUDENTS_FILE_NAME);
 	std::string name, age, growth, studyYear, weight, male, universityName;
 	while (getline(fin, name))
@@ -105,7 +95,6 @@ std::set<std::shared_ptr<CStudent>> LoadStudents(const std::set<std::shared_ptr<
 		getline(fin, studyYear);
 		getline(fin, male);
 		getline(fin, universityName);
-
 		std::shared_ptr<CUniversity> university;
 		for (auto &curUniversity : universities)
 		{
@@ -115,7 +104,6 @@ std::set<std::shared_ptr<CStudent>> LoadStudents(const std::set<std::shared_ptr<
 				break;
 			}
 		}
-
 		bool isMale = (male == "male");
 
 		auto student = std::make_shared<CStudent>(name, isMale, stoi(age), stoi(weight), stoi(growth), university, stoi(studyYear));
@@ -124,10 +112,9 @@ std::set<std::shared_ptr<CStudent>> LoadStudents(const std::set<std::shared_ptr<
 	return students;
 }
 
-void SaveStudents(const std::set<std::shared_ptr<CStudent>> &students)
+void StudOperations::SaveStudents(const std::set<std::shared_ptr<CStudent>> &students)
 {
 	std::ofstream fout(STUDENTS_FILE_NAME);
-
 	for (auto &curStudent : students)
 	{
 		fout << curStudent->GetName() << std::endl << curStudent->GetAge() << std::endl << curStudent->GetGrowth() << std::endl;
@@ -141,25 +128,19 @@ void SaveStudents(const std::set<std::shared_ptr<CStudent>> &students)
 		{
 			fout << "female" << std::endl;
 		}
-
 		fout << curStudent->GetUniversity()->GetName() << std::endl;
 	}
 }
 
-
-
-std::string GetStudentInfo()
+std::string StudOperations::GetStudentInfo()
 {
 	std::string student;
 	std::cout << "Input student's name : ";
 	std::cin >> student;
-
 	return student;
 }
 
-
-
-void GetChangeableStudent(int &age, int &growth, int &weight, int &studyYear)
+void StudOperations::GetChangeableStudent(int &age, int &growth, int &weight, int &studyYear)
 {
 	std::cout << "Input student's age : ";
 	std::cin >> age;
@@ -174,7 +155,7 @@ void GetChangeableStudent(int &age, int &growth, int &weight, int &studyYear)
 	std::cin >> studyYear;
 }
 
-std::shared_ptr<CStudent> GetNewStudent(const std::set<std::shared_ptr<CUniversity>> &universities)
+std::shared_ptr<CStudent> StudOperations::GetNewStudent(const std::set<std::shared_ptr<CUniversity>> &universities)
 {
 	std::string name;
 	std::cout << "Input student's name : ";
@@ -187,21 +168,19 @@ std::shared_ptr<CStudent> GetNewStudent(const std::set<std::shared_ptr<CUniversi
 	std::cout << "gender male/female : ";
 	std::cin >> gender;
 	bool isMale = gender == "male";
-
-	auto university = GetUniversity(universities, GetUniversityInfo());
-
+	auto university = UniverOperations::GetUniversity(universities, UniverOperations::GetUniversityInfo());
 	return std::make_shared<CStudent>(name, isMale, age, weight, growth, university, studyYear);
 }
 
-std::shared_ptr<CStudent> GetStudent(const std::set <std::shared_ptr<CStudent>> &students, const std::string &name)
+std::shared_ptr<CStudent> StudOperations::GetStudent(const std::set <std::shared_ptr<CStudent>> &students, const std::string &name)
 {
-	for (auto &student : students)
+	auto it = std::find_if(students.begin(), students.end(), [&](std::shared_ptr<CStudent> student)
 	{
-		if (student->GetName() == name)
-		{
-			return student;
-		}
+		return ((student->GetName()) == name);
+	});
+	if (it != students.end())
+	{
+		return *it;
 	}
-
 	return nullptr;
 }

@@ -45,7 +45,7 @@ void CPerson::SetAge(int age)
 	}
 }
 
-void CPerson::SetName(std::string name)
+void CPerson::SetName(const std::string& name)
 {
 	m_name = std::move(name);
 }
