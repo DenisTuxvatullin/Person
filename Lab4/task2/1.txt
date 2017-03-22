@@ -12,3 +12,10 @@ Nataha
 1
 male
 MGU
+Denis
+21
+169
+62
+4
+male
+PGTU

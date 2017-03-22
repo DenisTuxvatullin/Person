@@ -3,8 +3,7 @@
 class CUniversity
 {
 public:
-	CUniversity(std::string university);
-	~CUniversity();
+	CUniversity(const std::string &university);
 	std::string GetName() const;
 	void SetName(const std::string& name);
 private:

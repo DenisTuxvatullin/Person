@@ -12,9 +12,12 @@
 #include <set>
 #include <iostream>
 #include <fstream>
-#include "UniverOperations.h"
 #include <memory>
-
+#include "StudOperations.h"
+#include "UniverOperations.h"
+#include <string>
+static const std::shared_ptr<StudOperations> sOperation;
+static const std::shared_ptr<UniverOperations> uOperation;
 
 
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы

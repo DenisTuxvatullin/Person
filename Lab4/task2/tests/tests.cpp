@@ -6,9 +6,12 @@
 
 using namespace std;
 
-const string NAME = "STUDENT POLITEHA";
-const int STUDY_YEAR = 2, AGE = 12, WEIGHT = 50, GROWTH = 150;
-const string UNAME = "PGTU";
+static const string NAME = "STUDENT POLITEHA";
+static const int STUDY_YEAR = 2;
+static const int AGE = 12;
+static const int WEIGHT = 50;
+static const int GROWTH = 150;
+static const string UNAME = "PGTU";
 
 struct UniverFixture
 {

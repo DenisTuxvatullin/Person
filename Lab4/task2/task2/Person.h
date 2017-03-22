@@ -1,9 +1,8 @@
 #pragma once
-#include <string>
 class CPerson
 {
 public:
-	CPerson(std::string name, bool isMale, int age, int weight, int growth);
+	CPerson(const std::string &name, bool isMale, int age, int weight, int growth);
 	~CPerson();
 	std::string GetName() const;
 	bool IsMale() const;

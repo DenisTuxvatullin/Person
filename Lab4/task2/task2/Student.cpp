@@ -1,9 +1,10 @@
 #include "stdafx.h"
 #include "Student.h"
-CStudent::CStudent(std::string name, bool isMale,
-	int age, int weight, int growth,
-	const std::shared_ptr<CUniversity> university, int studyYear)
-	:CPerson(name, isMale, age, weight, growth), m_university(university)
+CStudent::CStudent(const std::string &name, bool isMale,
+		int age, int weight, int growth,
+		const std::shared_ptr<CUniversity> university, int studyYear)
+	: CPerson(name, isMale, age, weight, growth),
+	  m_university(university)
 {
 	if (studyYear >= MIN_YEAR && studyYear <= MAX_YEAR)
 	{
@@ -26,7 +27,7 @@ void CStudent::SetYearOfStudy(int studyYear)
 	}
 }
 
-void CStudent::SetUniversity(const std::weak_ptr<CUniversity> university)
+void CStudent::SetUniversity(const std::weak_ptr<CUniversity> &university)
 {
 	m_university = university;
 }

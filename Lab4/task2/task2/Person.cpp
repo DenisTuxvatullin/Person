@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Person.h"
 
-CPerson::CPerson(std::string name, bool isMale,
+CPerson::CPerson(const std::string &name, bool isMale,
 	int age, int weight, int growth)
 	: m_name(std::move(name)), m_isMale(isMale),
 	m_age(age), m_weight(weight), m_growth(growth)
