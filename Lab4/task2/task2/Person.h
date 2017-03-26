@@ -3,8 +3,7 @@ class CPerson
 {
 public:
 	CPerson(const std::string &name, bool isMale, int age, int weight, int growth);
-	~CPerson();
-	virtual ~CPerson() = default;
+	virtual ~CPerson(void) = default;
 	std::string GetName() const;
 	bool IsMale() const;
 	int GetAge() const;

@@ -16,6 +16,7 @@
 #include "StudOperations.h"
 #include "UniverOperations.h"
 #include <string>
+#include <cstdlib>
 static const std::shared_ptr<StudOperations> sOperation;
 static const std::shared_ptr<UniverOperations> uOperation;
 
