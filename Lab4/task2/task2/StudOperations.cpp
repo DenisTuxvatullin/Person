@@ -200,7 +200,7 @@ Student StudOperations::GetNewStudent(const std::set<Univer> &universities)
 	int	growth;
 	int	weight;
 	int	studyYear;
-	if (GetChangeableStudent(age, growth, weight, studyYear))
+	if (GetChangeableStudent(age, growth, weight, studyYear) || name != "")
 	{
 		std::string gender;
 		std::cout << "gender male/female : ";
