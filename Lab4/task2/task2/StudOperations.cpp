@@ -4,6 +4,8 @@
 #include "University.h"
 #include "Student.h"
 
+static const int MIN_VALUE = 0;
+static const int MAX_VALUE = 200;
 void StudOperations::PrintStudentInfo(const std::shared_ptr<const CStudent> &student)
 {
 	std::cout << "Name: " << student->GetName() << std::endl;
@@ -137,43 +139,78 @@ void StudOperations::SaveStudents(const std::set<Student> &students, const std::
 
 std::string StudOperations::GetStudentInfo()
 {
-	std::string student;
+	std::string name;
 	std::cout << "Input student's name : ";
-	std::cin >> student;
-	return student;
+	std::getline(std::cin, name);
+	std::getline(std::cin, name).clear();
+	return name;
 }
 
-void StudOperations::GetChangeableStudent(int &age, int &growth, int &weight, int &studyYear)
+int CorrectInputParams(const std::string &text)
 {
-	std::cout << "Input student's age : ";
-	std::cin >> age;
+	int value;
+	std::cout << text;
+	while (!(std::cin >> value)) {
+		std::cout << text;
+		std::cin.clear(); /*Сбрасываем ошибку*/
+		while (std::cin.get() != '\n') continue; /*Раз в строке есть посторонние символы, то эта строка нам не нужна, идём в конец строки*/
+	}
+	return value;
+}
+bool StudOperations::GetChangeableStudent(int &age, int &growth, int &weight, int &studyYear)
+{
+	
+	age = CorrectInputParams("Input student age : ");
+	if (age < MIN_VALUE || age > MAX_VALUE)
+	{
+		std::cout << "Incorrect student's age! ";
+		return false;
+	}
 
-	std::cout << "Input student's height : ";
-	std::cin >> growth;
+	growth = CorrectInputParams("Input student height : ");
+	if (growth < MIN_VALUE || growth > MAX_VALUE)
+	{
+		std::cout << "Incorrect student's height! ";
+		return false;
+	}
 
-	std::cout << "Input student's weight : ";
-	std::cin >> weight;
+	weight = CorrectInputParams("Input student weight : ");
+	if (weight < MIN_VALUE || weight > MAX_VALUE)
+	{
+		std::cout << "Incorrect student's weight! ";
+		return false;
+	}
 
-	std::cout << "Input student's year of study : ";
-	std::cin >> studyYear;
+	studyYear = CorrectInputParams("Input student's year of study : ");
+	if (studyYear < MIN_VALUE || studyYear > 5)
+	{
+		std::cout << "Incorrect student's year of study! ";
+		return false;
+	}
+	return true;
 }
 
 Student StudOperations::GetNewStudent(const std::set<Univer> &universities)
 {
 	std::string name;
 	std::cout << "Input student's name : ";
-	std::cin >> name;
+	std::getline(std::cin, name);
+	std::getline(std::cin, name).clear();
 	int age;
 	int	growth;
 	int	weight;
 	int	studyYear;
-	GetChangeableStudent(age, growth, weight, studyYear);
-	std::string gender;
-	std::cout << "gender male/female : ";
-	std::cin >> gender;
-	bool isMale = gender == "male";
-	auto university = uOperation->GetUniversity(universities, uOperation->GetUniversityInfo());
-	return std::make_shared<CStudent>(name, isMale, age, weight, growth, university, studyYear);
+	if (GetChangeableStudent(age, growth, weight, studyYear))
+	{
+		std::string gender;
+		std::cout << "gender male/female : ";
+		std::cin >> gender;
+		bool isMale = gender == "male";
+		auto university = uOperation->GetUniversity(universities, uOperation->GetUniversityInfo());
+		return std::make_shared<CStudent>(name, isMale, age, weight, growth, university, studyYear);
+	}
+	std::cout << std::endl;
+	return nullptr;
 }
 
 Student StudOperations::GetStudent(const std::set <Student> &students, const std::string &name)

@@ -19,7 +19,9 @@ static const enum
 	CHANGE_STUDENTS_UNIVERSITY = 7,
 	PRINT_UNIVERSITIES = 8,
 	PRINT_STUDENTS_FROM_UNIVERSITY = 9,
-	PRINT_STUDENT = 10
+	PRINT_STUDENT = 10,
+	PRINT_COM = 11,
+	EXIT = 12
 };
 
 void PrintActions()
@@ -29,8 +31,8 @@ void PrintActions()
 	std::cout << "3. Add student				8. Print universities" << std::endl;
 	std::cout << "4. Delete student			9. Print students from university" << std::endl;
 	std::cout << "5. Change university			10. Print students" << std::endl;
-	std::cout << "6. Change student" << std::endl;
-	std::cout << "7. Change student's university " << std::endl << std::endl;
+	std::cout << "6. Change student			11. Print commands" <<std::endl;		
+	std::cout << "7. Change student's university		12. EXIT"<< std::endl << std::endl;
 
 }
 
@@ -67,7 +69,7 @@ void ActionAddStudent(sUniver &universities, sStudent &students)
 			std::cout << "Student has added" << std::endl;
 			return;
 		}
-		std::cout << "Error adding" << std::endl;
+		std::cout << "University not found" << std::endl;
 	}
 }
 
@@ -142,10 +144,14 @@ void ActionPrintStudentsFromUniversity(sUniver &universities, sStudent &students
 void DialogWithUser(sUniver &universities, sStudent &students)
 {
 	int choice = 1;
-	PrintActions();
-	std::cout << "Input command: ";
-	while (std::cin >> choice)
+	while (choice != EXIT)
 	{
+		std::cout << "Input command: ";
+		while (!(std::cin >> choice)) {
+			std::cout << "Input command: ";
+			std::cin.clear(); /*Сбрасываем ошибку*/
+			while (std::cin.get() != '\n') continue; /*Раз в строке есть посторонние символы, то эта строка нам не нужна, идём в конец строки*/
+		}
 		switch (choice)
 		{
 			case ADD_UNIVERSITY:
@@ -198,8 +204,21 @@ void DialogWithUser(sUniver &universities, sStudent &students)
 				sOperation->PrintAllStudents(students);
 				break;
 			}
+			case PRINT_COM:
+			{
+				PrintActions();
+				break;
+			}
+			case EXIT:
+			{
+				break;
+			}
+			default:
+			{
+				std::cin.clear();
+				break;
+			}
 		}
-		std::cout << "Input command: ";
 	}
 }
 
@@ -207,13 +226,15 @@ int main(int argc, char *argv[])
 {
 	if (argc != 3)
 	{
-		printf("Incorrect number of param");
+		std::cout << "Incorrect number of param, input two .txt files" << std::endl << "(1-Database for student, 2-Database for univers)";
+		std::cin.get();
 		return 1;
 	}
 	std::string sFilename = argv[1];
 	std::string uFilename = argv[2];
 	auto universities = uOperation->LoadUniversities(uFilename);
 	auto students = sOperation->LoadStudents(universities, sFilename);
+	PrintActions();
 	DialogWithUser(universities, students);
 	uOperation->SaveUniversities(universities, uFilename);
 	sOperation->SaveStudents(students, sFilename);

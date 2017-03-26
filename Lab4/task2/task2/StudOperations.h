@@ -21,7 +21,7 @@ public:
 	std::set<Student> LoadStudents(const std::set<Univer> &universities, const std::string &sFilename);
 	void SaveStudents(const std::set<Student> &students, const std::string &sFileName);
 	std::string GetStudentInfo();
-	void GetChangeableStudent(int &age, int &growth, int &weight, int &studyYear);
+	bool GetChangeableStudent(int &age, int &growth, int &weight, int &studyYear);
 	Student GetNewStudent(const std::set<Univer> &universities);
 	Student GetStudent(const std::set <Student> &students, const std::string &name);
 };

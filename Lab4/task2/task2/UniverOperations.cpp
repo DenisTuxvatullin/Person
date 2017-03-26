@@ -69,7 +69,8 @@ std::string UniverOperations::GetUniversityInfo()
 {
 	std::string university;
 	std::cout << "Input university name : ";
-	std::cin >> university;
+	std::getline(std::cin, university);
+	std::getline(std::cin, university).clear();
 	return university;
 }
 

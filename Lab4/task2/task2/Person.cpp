@@ -3,12 +3,8 @@
 
 CPerson::CPerson(const std::string &name, bool isMale,
 	int age, int weight, int growth)
-	: m_name(std::move(name)), m_isMale(isMale),
+	: m_name(name), m_isMale(isMale),
 	m_age(age), m_weight(weight), m_growth(growth)
-{
-}
-
-CPerson::~CPerson()
 {
 }
 
@@ -47,7 +43,7 @@ void CPerson::SetAge(int age)
 
 void CPerson::SetName(const std::string& name)
 {
-	m_name = std::move(name);
+	m_name = name;
 }
 
 void CPerson::SetGrowth(int growth)
