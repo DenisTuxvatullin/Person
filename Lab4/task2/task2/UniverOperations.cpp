@@ -71,7 +71,11 @@ std::string UniverOperations::GetUniversityInfo()
 	std::cout << "Input university name : ";
 	std::getline(std::cin, university);
 	std::getline(std::cin, university).clear();
-	return university;
+	if (university != "")
+	{
+		return university;
+	}
+	return "";
 }
 
 std::shared_ptr<CUniversity> UniverOperations::GetUniversity(const std::set<std::shared_ptr<CUniversity>> &universities, const std::string &name)

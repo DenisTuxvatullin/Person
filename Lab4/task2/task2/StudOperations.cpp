@@ -163,28 +163,28 @@ bool StudOperations::GetChangeableStudent(int &age, int &growth, int &weight, in
 	age = CorrectInputParams("Input student age : ");
 	if (age < MIN_VALUE || age > MAX_VALUE)
 	{
-		std::cout << "Incorrect student's age! ";
+		std::cout << "Incorrect student's age! " << std::endl;
 		return false;
 	}
 
 	growth = CorrectInputParams("Input student height : ");
 	if (growth < MIN_VALUE || growth > MAX_VALUE)
 	{
-		std::cout << "Incorrect student's height! ";
+		std::cout << "Incorrect student's height! " << std::endl;
 		return false;
 	}
 
 	weight = CorrectInputParams("Input student weight : ");
 	if (weight < MIN_VALUE || weight > MAX_VALUE)
 	{
-		std::cout << "Incorrect student's weight! ";
+		std::cout << "Incorrect student's weight! " << std::endl;
 		return false;
 	}
 
 	studyYear = CorrectInputParams("Input student's year of study : ");
 	if (studyYear < MIN_VALUE || studyYear > 5)
 	{
-		std::cout << "Incorrect student's year of study! ";
+		std::cout << "Incorrect student's year of study! " << std::endl;
 		return false;
 	}
 	return true;
@@ -196,11 +196,16 @@ Student StudOperations::GetNewStudent(const std::set<Univer> &universities)
 	std::cout << "Input student's name : ";
 	std::getline(std::cin, name);
 	std::getline(std::cin, name).clear();
+	if (name == "")
+	{
+		std::cout << "Incorrect name! "<< std::endl;
+		return nullptr;
+	}
 	int age;
 	int	growth;
 	int	weight;
 	int	studyYear;
-	if (GetChangeableStudent(age, growth, weight, studyYear) || name != "")
+	if (GetChangeableStudent(age, growth, weight, studyYear) && name != "")
 	{
 		std::string gender;
 		std::cout << "gender male/female : ";

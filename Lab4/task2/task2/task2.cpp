@@ -89,12 +89,15 @@ void ActionDeleteStudent(sStudent &students)
 void ActionChangeUniversity(sUniver &universities)
 {
 	std::string universityInfo = uOperation->GetUniversityInfo();
-	if (auto university = uOperation->GetUniversity(universities, universityInfo))
+	if (universityInfo != "")
 	{
-		std::string newName = uOperation->GetUniversityInfo();
-		university->SetName(newName);
-		std::cout << "Name has changed" << std::endl;
-		return;
+		if (auto university = uOperation->GetUniversity(universities, universityInfo))
+		{
+			std::string newName = uOperation->GetUniversityInfo();
+			university->SetName(newName);
+			std::cout << "Name has changed" << std::endl;
+			return;
+		}
 	}
 	std::cout << "Error changing name" << std::endl;
 }
@@ -104,12 +107,15 @@ void ActionChangeStudent(sStudent &students)
 	if (auto student = sOperation->GetStudent(students, sOperation->GetStudentInfo()))
 	{
 		int age, growth, weight, studyYear;
-		sOperation->GetChangeableStudent(age, growth, weight, studyYear);
-		student->SetAge(age);
-		student->SetGrowth(growth);
-		student->SetYearOfStudy(studyYear);
-		student->SetWeight(weight);
-		std::cout << "Changed" << std::endl;
+
+		if (sOperation->GetChangeableStudent(age, growth, weight, studyYear))
+		{
+			student->SetAge(age);
+			student->SetGrowth(growth);
+			student->SetYearOfStudy(studyYear);
+			student->SetWeight(weight);
+			std::cout << "Changed" << std::endl;
+		}
 		return;
 	}
 	std::cout << "No such student" << std::endl;
